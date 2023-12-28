@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -10,6 +11,7 @@ public class DrawPanel : MonoBehaviour
     [SerializeField][Range(0f, 2f)] private float lineWidth = 0.2f;
     private RectTransform _transform;
     private Camera _mainCamera;
+    private List<Vector3> _lineScreenPositions = new ();
 
     private Vector3 _previousPosition;
 
@@ -37,6 +39,7 @@ public class DrawPanel : MonoBehaviour
         lineRenderer.positionCount = 1;
         var transform1 = lineRenderer.transform;
         _previousPosition = transform1.position;
+        _lineScreenPositions.Clear();
     }
 
     private void Update()
@@ -49,12 +52,12 @@ public class DrawPanel : MonoBehaviour
 
         Vector3 touchPos = Touch.activeTouches[0].screenPosition;
         touchPos.z = 10;
-        Vector3 currentPosition = Camera.main.ScreenToWorldPoint(touchPos);
+        Vector3 currentPosition = _mainCamera.ScreenToWorldPoint(touchPos);
         // currentPosition.z = 0;
 
         if (Vector3.Distance(currentPosition, _previousPosition) > minDistance)
         {
-            if (_previousPosition == lineRenderer.transform.position)
+            if (_lineScreenPositions.Count < 1)
             {
                 lineRenderer.SetPosition(0, currentPosition);
             }
@@ -67,7 +70,12 @@ public class DrawPanel : MonoBehaviour
             }
             
             _previousPosition = currentPosition;
+            _lineScreenPositions.Add(touchPos);
         }
-        Debug.Log($"Touch in area {currentPosition}");
+
+        for (int i = 0; i < _lineScreenPositions.Count; i++)
+        {
+            lineRenderer.SetPosition(i, _mainCamera.ScreenToWorldPoint(_lineScreenPositions[i]));
+        }
     }
 }
