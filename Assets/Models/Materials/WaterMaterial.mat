@@ -108,7 +108,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _Choppines: 0.01
+    - _Choppines: 0.5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -118,7 +118,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Flow_Speed: 0.01
+    - _Flow_Speed: 0.03
     - _Flow_Strength: 0.0075
     - _FoamDistance: 1.5
     - _GlossMapScale: 0
